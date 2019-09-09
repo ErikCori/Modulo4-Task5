@@ -32,8 +32,8 @@ public class GamePlayer {
 
     //Constructor
     public GamePlayer(){}
-    public GamePlayer(Date joinDate, Game game, Player player){
-        this.joinDate = joinDate;
+    public GamePlayer(Game game, Player player){
+        this.joinDate = new Date();
         this.player = player;
         this.game = game;
     }
@@ -58,5 +58,14 @@ public class GamePlayer {
     }
     public Set<Salvo> getSalvoes() {
         return salvoes;
+    }
+
+    //Controller
+
+    public Map<String, Object> makeGamePlayerDto(){
+        Map<String, Object> dto= new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        dto.put("player", this.player.makePlayerDto());
+        return dto;
     }
 }

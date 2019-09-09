@@ -3,8 +3,7 @@ package com.codeoftheweb.salvo.Model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -17,15 +16,14 @@ public class Game {
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
     private Set<GamePlayer> gamePlayers;
 
-    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
-    private Set<Score> scores;
-
     private Date creationDate;
 
     //Constructor
     public Game(){}
-    public Game(Date creationDate){
-        this.creationDate = creationDate;
+    public Game(int plusHours){
+        int seconds = plusHours * 3600;
+        Date date = new Date();
+        this.creationDate = Date.from(date.toInstant().plusSeconds(seconds));
     }
 
     //Getters
@@ -38,5 +36,14 @@ public class Game {
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
     }
-    public Set<Score> getScores() { return scores; }
+
+    //Controller
+
+    public Map<String, Object> makeGameDto(){
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        dto.put("created", this.getCreationDate());
+        dto.put("gamePlayers", this.getGamePlayers().stream().map(g -> g.makeGamePlayerDto()));
+        return dto;
+    }
 }

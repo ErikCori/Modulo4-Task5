@@ -5,6 +5,8 @@ import com.codeoftheweb.salvo.Model.GamePlayer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -16,9 +18,6 @@ public class Player {
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     private Set<GamePlayer> gamePlayers;
-
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
-    private Set<Score> scores;
 
     private String username;
 
@@ -40,5 +39,17 @@ public class Player {
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
     }
-    public Set<Score> getScores() { return scores; }
+
+    //Controller
+
+    public Map<String, Object> makePlayerDto(){
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        dto.put("email", this.getUsername());
+        return dto;
+    }
+
+    public int getWins(Set<Score> scores){
+        return scores.filter(score -> score.getScore() == 1).count();
+    }
 }

@@ -5,7 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Salvo {
@@ -47,4 +49,13 @@ public class Salvo {
         return locations;
     }
 
+    //Controller
+
+    public Map<String, Object> makeSalvoDto(){
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("turn", this.getTurn());
+        dto.put("player", this.getGamePlayer().getPlayer().getId());
+        dto.put("salvoLocations", this.getLocations());
+        return dto;
+    }
 }
