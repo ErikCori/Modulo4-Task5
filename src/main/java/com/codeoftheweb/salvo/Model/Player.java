@@ -1,7 +1,6 @@
 package com.codeoftheweb.salvo.Model;
 
 
-import com.codeoftheweb.salvo.Model.GamePlayer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -18,6 +17,9 @@ public class Player {
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     private Set<GamePlayer> gamePlayers;
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+    private Set<Score> scores;
 
     private String username;
 
@@ -39,7 +41,7 @@ public class Player {
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
     }
-
+    public Set<Score> getScores() { return scores; }
     //Controller
 
     public Map<String, Object> makePlayerDto(){
@@ -49,7 +51,17 @@ public class Player {
         return dto;
     }
 
-    public int getWins(Set<Score> scores){
-        return scores.filter(score -> score.getScore() == 1).count();
+    public float getWins(){
+        return getScores().stream().filter(score -> score.getScore() == 1).count();
+    }
+    public float getTied(){
+        return getScores().stream().filter(score -> score.getScore() == (float) 0.5).count();
+    }
+    public float getLoses(){
+        return getScores().stream().filter(score -> score.getScore()== 0).count();
+    }
+    public float totalScore(){
+        return (float) (getWins() *1 + getTied() * 0.5);
     }
 }
+
