@@ -46,7 +46,8 @@ public class Game {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("created", this.getCreationDate());
-        dto.put("gamePlayers", this.getGamePlayers().stream().map(g -> g.makeGamePlayerDto()));
+        dto.put("gamePlayers", this.getGamePlayers().stream().map(gp -> gp.makeGamePlayerDto()));
+        dto.put("scores", this.getGamePlayers().stream().map(gp -> gp.getPlayer().makeScoredto()));
         return dto;
     }
 }

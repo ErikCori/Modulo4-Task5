@@ -5,6 +5,7 @@ import com.codeoftheweb.salvo.Model.GamePlayer;
 import com.codeoftheweb.salvo.Model.Ship;
 import com.codeoftheweb.salvo.Repository.GamePlayerRepository;
 import com.codeoftheweb.salvo.Repository.GameRepository;
+import com.codeoftheweb.salvo.Repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,9 @@ public class SalvoController {
 
     @Autowired
     private GamePlayerRepository gamePlayerRepository;
+
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @RequestMapping("/games")
     public List<Object> getAllGames() {
@@ -51,6 +55,10 @@ public class SalvoController {
     }
     private List<Map<String, Object>> getShipList(Set<Ship> ships){
         return ships.stream().map(ship-> ship.makeShipDto()).collect(Collectors.toList());
+    }
+    @RequestMapping("/leaderboard")
+    public List<Object> leaderboardView(){
+        return playerRepository.findAll().stream().map(player -> player.makeTableLeaderboard()).collect(Collectors.toList());
     }
 
 

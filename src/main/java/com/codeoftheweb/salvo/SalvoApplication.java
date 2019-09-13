@@ -23,7 +23,8 @@ public class SalvoApplication {
 									  GameRepository gameRepository,
 									  GamePlayerRepository gamePlayerRepository,
 									  ShipRepository shipRepository,
-									  SalvoRepository salvoRepository){
+									  SalvoRepository salvoRepository,
+									  ScoreRepository scoreRepository){
 		return (args) -> {
 			//save  a couple of players
 			Player player1 = new Player("j.bauer@ctu.gov");
@@ -132,6 +133,22 @@ public class SalvoApplication {
 			salvoRepository.saveAll(Arrays.asList(salvo1, salvo2, salvo3, salvo4, salvo5, salvo6, salvo7, salvo8, salvo9,
 												salvo10, salvo11, salvo12, salvo13, salvo14, salvo15, salvo16, salvo17,
 												salvo18, salvo19, salvo20, salvo21));
+
+			//Save a couple of scores
+			float win = 1;
+			float tie = (float) 0.5;
+			float lose = 0;
+
+			Score score1 = new Score(game1, player1, win);
+			Score score2 = new Score(game1, player2, lose);
+			Score score3 = new Score(game3, player2, win);
+			Score score4 = new Score(game3, player4, lose);
+			Score score5 = new Score(game2, player1, tie);
+			Score score6 = new Score(game2, player2, tie);
+			Score score7 = new Score(game4, player1, tie);
+			Score score8 = new Score(game4, player2, tie);
+
+			scoreRepository.saveAll(Arrays.asList(score1, score2, score3, score4, score5, score6, score7, score8));
 		};
 	}
 }
