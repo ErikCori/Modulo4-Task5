@@ -1,11 +1,22 @@
 var url = "http://localhost:8080/api/games"
-
+var urlLeader = "http://localhost:8080/api/leaderboard"
 var app = new Vue({
     el:'#app',
     data:{
+        login:false,
         games:[],
+        scores:[],
     }
 })
+fetch(urlLeader)
+.then(function(myData){
+    return myData.json();
+})
+.then(function(myData){
+    data = myData;
+    app.scores = data;
+})
+
 fetch(url)
 .then(function(myData){
     return myData.json();
